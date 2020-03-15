@@ -59,6 +59,8 @@ class Query(object):
         :return: QueryBuild.Selectors namedtuple that translates
         the dict of query options into a SearchOperation
         """
+        if self.return_object not in self.ReturnObjects:
+            raise UnsupportedFeature
 
         if self.date:
             self.date_search["type"] = DateSearch.equals.value
@@ -177,4 +179,8 @@ class NEOSearcher(object):
         if self.date_search_type.index(query.date_search["type"]) == 1:
             result = self.db.neo_date_db.get(query.date_search["date"])
             result = result[:query.number]
+
+            if query.return_object == 'NEO':
+                result = map(lambda orbit: self.db.neo_name_db[orbit.name], 
+                             result)
         return result

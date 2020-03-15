@@ -52,5 +52,5 @@ class NEODatabase(object):
                 self.neo_name_db.setdefault(neo.name, neo).update_orbits(orbit)
                 self.neo_date_db.setdefault(
                     approach_date, []).append(
-                    self.neo_name_db[neo.name]
+                    orbit
                     )

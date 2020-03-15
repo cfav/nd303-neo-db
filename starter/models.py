@@ -15,9 +15,9 @@ class NearEarthObject(object):
         self.neo_reference_id = kwargs["neo_reference_id"]
         self.name = kwargs["name"]
         self.nasa_jpl_url = kwargs["name"]
-        self.absolute_magnitude_h = kwargs["absolute_magnitude_h"]
-        self.estimated_dia_min_km = kwargs["estimated_diameter_min_kilometers"]
-        self.estimated_dia_max_km = kwargs["estimated_diameter_max_kilometers"]
+        self.abs_magnitude_h = kwargs["absolute_magnitude_h"]
+        self.est_dia_min_km = kwargs["estimated_diameter_min_kilometers"]
+        self.est_dia_max_km = kwargs["estimated_diameter_max_kilometers"]
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
         self.close_approach_date_full = kwargs["close_approach_date_full"]
         self.orbits = []
@@ -25,6 +25,10 @@ class NearEarthObject(object):
     def __str__(self):
         neo_contents = f'id = {self.id}\n' + \
                        f'name = {self.name}\n' + \
+                       f'absolute magnitude(h) = {self.abs_magnitude_h}\n' + \
+                       f'est. diameter min(km) = {self.est_dia_min_km}\n' +\
+                       f'est. diameter max(km) = {self.est_dia_max_km}\n' +\
+                       f'is hazardous = {self.is_hazardous}\n' +\
                        f'orbit dates = {self.get_orbit_dates()}\n'
         return neo_contents
 
@@ -65,11 +69,21 @@ class OrbitPath(object):
         self.id = kwargs["id"]
         self.neo_reference_id = kwargs["neo_reference_id"]
         self.name = kwargs["name"]
-        self.kilometers_per_second = kwargs["kilometers_per_second"]
-        self.kilometers_per_hour = kwargs["kilometers_per_hour"]
+        self.km_per_second = kwargs["kilometers_per_second"]
+        self.km_per_hour = kwargs["kilometers_per_hour"]
         self.close_approach_date = kwargs["close_approach_date"]
         self.close_approach_date_full = kwargs["close_approach_date_full"]
-        self.miss_distance_astronomical = kwargs["miss_distance_astronomical"]
-        self.miss_distance_lunar = kwargs["miss_distance_lunar"]
-        self.miss_distance_kilometers = kwargs["miss_distance_kilometers"]
-        self.miss_distance_miles = kwargs["miss_distance_miles"]
+        self.est_dia_min_km = kwargs["estimated_diameter_min_kilometers"]
+        self.est_dia_max_km = kwargs["estimated_diameter_max_kilometers"]
+        self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
+        self.miss_distance_km = kwargs["miss_distance_kilometers"]
+
+    def __str__(self):
+        orbit_contents = f'name = {self.name}\n' + \
+                         f'miss distance(km) = {self.miss_distance_km}\n' + \
+                         f'km per hour = {self.km_per_hour}\n' + \
+                         f'est. diameter min(km) = {self.est_dia_min_km}\n' +\
+                         f'est. diameter max(km) = {self.est_dia_max_km}\n' +\
+                         f'is hazardous = {self.is_hazardous}\n' +\
+                         f'orbit date = {self.close_approach_date_full}\n'
+        return orbit_contents
