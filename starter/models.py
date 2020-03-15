@@ -14,12 +14,11 @@ class NearEarthObject(object):
         self.id = kwargs["id"]
         self.neo_reference_id = kwargs["neo_reference_id"]
         self.name = kwargs["name"]
-        self.nasa_jpl_url = kwargs["name"]
+        self.nasa_jpl_url = kwargs["nasa_jpl_url"]
         self.abs_magnitude_h = kwargs["absolute_magnitude_h"]
         self.est_dia_min_km = kwargs["estimated_diameter_min_kilometers"]
         self.est_dia_max_km = kwargs["estimated_diameter_max_kilometers"]
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
-        self.close_approach_date_full = kwargs["close_approach_date_full"]
         self.orbits = []
 
     def __str__(self):
@@ -29,7 +28,7 @@ class NearEarthObject(object):
                        f'est. diameter min(km) = {self.est_dia_min_km}\n' +\
                        f'est. diameter max(km) = {self.est_dia_max_km}\n' +\
                        f'is hazardous = {self.is_hazardous}\n' +\
-                       f'orbit dates = {self.get_orbit_dates()}\n'
+                       f'orbit dates = {self.get_orbit_dates(self.orbits)}\n'
         return neo_contents
 
     def update_orbits(self, orbit):
@@ -42,7 +41,8 @@ class NearEarthObject(object):
         # TODO: How do we connect orbits back to the Near Earth Object?
         self.orbits.append(orbit)
 
-    def get_orbit_dates(self):
+    @staticmethod
+    def get_orbit_dates(orbits):
         """
         Extracts the dates from the NEO instance
 
@@ -50,8 +50,8 @@ class NearEarthObject(object):
         """
         orbit_dates = []
 
-        for orbit in self.orbits:
-            orbit_dates.append(orbit.close_approach_date_full)
+        for orbit in orbits:
+            orbit_dates.append(orbit.close_approach_date)
 
         return orbit_dates
 

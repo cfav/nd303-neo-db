@@ -181,6 +181,7 @@ class NEOSearcher(object):
             result = result[:query.number]
 
             if query.return_object == 'NEO':
-                result = map(lambda orbit: self.db.neo_name_db[orbit.name], 
-                             result)
+                result = list(map(lambda
+                                  orbit: self.db.neo_name_db[orbit.name],
+                                  result))
         return result

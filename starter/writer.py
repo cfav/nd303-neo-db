@@ -1,5 +1,6 @@
 from enum import Enum
-
+from models import NearEarthObject, OrbitPath
+import csv
 
 class OutputFormat(Enum):
     """
@@ -51,8 +52,76 @@ class NEOWriter(object):
                 print(row)
 
         elif output_choice == 1:
-            pass
+            with open('results.csv', 'w') as csvfile:
+                fieldnames = self.get_fieldnames(data[0])
+                
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                writer.writeheader()
+
+                if type(data[0]) == NearEarthObject:
+                    for row in data:
+                        writer.writerow({
+                            'id': row.id,
+                            'neo_reference_id': row.neo_reference_id,
+                            'name': row.name,
+                            'nasa_jpl_url': row.nasa_jpl_url,
+                            'absolute_magnitude_h': row.abs_magnitude_h,
+                            'estimated_diameter_min_km': row.est_dia_min_km,
+                            'estimated_diameter_max_km': row.est_dia_max_km,
+                            'is_potentially_hazardous': row.is_hazardous,
+                            'orbit_dates': NearEarthObject.get_orbit_dates(row.orbits)
+                            })
+                
+                else:
+                    for row in data:
+                        writer.writerow({
+                            'id': row.id,
+                            'neo_reference_id': row.neo_reference_id,
+                            'name': row.name,
+                            'km_per_second': row.km_per_second,
+                            'km_per_hour': row.km_per_hour,
+                            'close_approach_date': row.close_approach_date,
+                            'close_approach_date_full': row.close_approach_date_full,
+                            'estimated_diameter_min_km': row.est_dia_min_km,
+                            'estimated_diameter_max_km': row.est_dia_max_km,
+                            'is_potentially_hazardous': row.is_hazardous,
+                            'miss_distance_km': row.miss_distance_km
+                            })
+                
+
         else:
             print("write option not supported")
 
-        return data
+        return True
+
+    def get_fieldnames(self, obj):
+        fieldnames = None
+        
+        if type(obj) == NearEarthObject:
+            fieldnames = ['id',
+                          'neo_reference_id',
+                          'name',
+                          'nasa_jpl_url',
+                          'absolute_magnitude_h',
+                          'estimated_diameter_min_km',
+                          'estimated_diameter_max_km',
+                          'is_potentially_hazardous',
+                          'orbit_dates'
+                          ]
+        else:
+            fieldnames = ['id',
+                          'neo_reference_id',
+                          'name',
+                          'km_per_second',
+                          'km_per_hour',
+                          'close_approach_date',
+                          'close_approach_date_full',
+                          'estimated_diameter_min_km',
+                          'estimated_diameter_max_km',
+                          'is_potentially_hazardous',
+                          'miss_distance_km'
+                          ]
+
+        return fieldnames
+
