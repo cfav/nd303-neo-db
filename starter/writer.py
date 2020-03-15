@@ -23,7 +23,7 @@ class NEOWriter(object):
 
     def __init__(self):
         # TODO: How can we use the OutputFormat in the NEOWriter?
-        pass
+        self.output_format = OutputFormat.list()
 
     def write(self, format, data, **kwargs):
         """
@@ -38,3 +38,16 @@ class NEOWriter(object):
         # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
         # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
         # TODO: output format.
+
+        output_choice = self.output_format.index(format)
+        
+        if output_choice == 0:
+            for row in data:
+                print(row)
+
+        elif output_choice == 1:
+            pass
+        else:
+            print("write option not supported")
+
+        return data

@@ -35,6 +35,15 @@ class Query(object):
         :param kwargs: dict of search query parameters to determine which SearchOperation query to use
         """
         # TODO: What instance variables will be useful for storing on the Query object?
+        #self.selectors = self.Selectors(kwargs["date"], kwargs["number"], kwargs.get("filter", None), kwargs["return_object"])
+        self.date = kwargs.get("date", None)
+        self.start_date = kwargs.get("start_date", None)
+        self.end_date = kwargs.get("end_date", None)
+        self.number = kwargs.get("number", 0)
+        self.filters = kwargs.get("filter", None)
+        self.return_object = kwargs.get("return_object", "NEO")
+        self.date_search = {}
+        #self.return_objects = self.ReturnObjects[kwargs["return_object"]]
 
     def build_query(self):
         """
@@ -45,6 +54,22 @@ class Query(object):
         """
 
         # TODO: Translate the query parameters into a QueryBuild.Selectors object
+
+        if self.date:
+            self.date_search["type"] = DateSearch.equals.value
+            self.date_search["date"] = self.date 
+
+        elif self.start_date and self.end_date:
+            self.date_search = { 
+                "type": DateSearch.between, 
+                "start_date": self.start_date,
+                "end_date": self.end_date 
+                }
+
+        query = self.Selectors(self.date_search, self.number, self.filters, self.return_object)
+
+
+        return query
 
 
 class Filter(object):
@@ -106,6 +131,7 @@ class NEOSearcher(object):
         """
         self.db = db
         # TODO: What kind of an instance variable can we use to connect DateSearch to how we do search?
+        self.date_search_type = DateSearch.list()
 
     def get_objects(self, query):
         """
@@ -122,3 +148,8 @@ class NEOSearcher(object):
         # TODO: Write instance methods that get_objects can use to implement the two types of DateSearch your project
         # TODO: needs to support that then your filters can be applied to. Remember to return the number specified in
         # TODO: the Query.Selectors as well as in the return_type from Query.Selectors
+        
+        if self.date_search_type.index(query.date_search["type"]) == 1:
+            result = self.db.neo_date_db.get(query.date_search["date"])
+            result = result[:query.number]
+        return result
