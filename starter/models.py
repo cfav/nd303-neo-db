@@ -24,7 +24,7 @@ class NearEarthObject(object):
     def __str__(self):
         neo_contents =  f'id = {self.id}\n' + \
                         f'name = {self.name}\n' + \
-                        f'orbits = {self.orbits}\n'
+                        f'orbit dates = {self.get_orbit_dates()}\n'
         return neo_contents
 
 
@@ -38,6 +38,20 @@ class NearEarthObject(object):
 
         # TODO: How do we connect orbits back to the Near Earth Object?
         self.orbits.append(orbit)
+
+    def get_orbit_dates(self):
+        """
+        Extracts the dates from the NEO instance
+
+        :return: list of dates
+        """
+        orbit_dates = []
+
+        for orbit in self.orbits:
+            orbit_dates.append(orbit.close_approach_date_full)
+
+        return orbit_dates
+
 
 
 class OrbitPath(object):
