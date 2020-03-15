@@ -18,7 +18,8 @@ class OutputFormat(Enum):
 
 class NEOWriter(object):
     """
-    Python object use to write the results from supported output formatting options.
+    Python object use to write the results from supported output
+    formatting options.
     """
 
     def __init__(self):
@@ -27,20 +28,24 @@ class NEOWriter(object):
 
     def write(self, format, data, **kwargs):
         """
-        Generic write interface that, depending on the OutputFormat selected calls the
-        appropriate instance write function
+        Generic write interface that, depending on the OutputFormat selected
+        calls the appropriate instance write function
 
         :param format: str representing the OutputFormat
         :param data: collection of NearEarthObject or OrbitPath results
-        :param kwargs: Additional attributes used for formatting output e.g. filename
+        :param kwargs: Additional attributes used for formatting output
+        e.g. filename
+
         :return: bool representing if write successful or not
         """
-        # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
-        # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
+        # TODO: Using the OutputFormat, how can we organize our 'write' logic
+        # for output to stdout vs to csvfile
+        # TODO: into instance methods for NEOWriter? Write instance methods
+        # that write() can call to do the necessary
         # TODO: output format.
 
         output_choice = self.output_format.index(format)
-        
+
         if output_choice == 0:
             for row in data:
                 print(row)

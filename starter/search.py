@@ -22,20 +22,26 @@ class DateSearch(Enum):
 
 class Query(object):
     """
-    Object representing the desired search query operation to build. The Query uses the Selectors
-    to structure the query information into a format the NEOSearcher can use for date search.
+    Object representing the desired search query operation to build.
+    The Query uses the Selectors to structure the query information into
+    a format the NEOSearcher can use for date search.
     """
 
-    Selectors = namedtuple('Selectors', ['date_search', 'number', 'filters', 'return_object'])
-    DateSearch = namedtuple('DateSearch', ['type', 'values'])
+    Selectors = namedtuple(
+        'Selectors',
+        ['date_search', 'number', 'filters', 'return_object']
+        )
+    DateSearch = namedtuple(
+        'DateSearch',
+        ['type', 'values']
+        )
     ReturnObjects = {'NEO': NearEarthObject, 'Path': OrbitPath}
 
     def __init__(self, **kwargs):
         """
-        :param kwargs: dict of search query parameters to determine which SearchOperation query to use
+        :param kwargs: dict of search query parameters to determine
+        which SearchOperation query to use
         """
-        # TODO: What instance variables will be useful for storing on the Query object?
-        #self.selectors = self.Selectors(kwargs["date"], kwargs["number"], kwargs.get("filter", None), kwargs["return_object"])
         self.date = kwargs.get("date", None)
         self.start_date = kwargs.get("start_date", None)
         self.end_date = kwargs.get("end_date", None)
@@ -43,46 +49,52 @@ class Query(object):
         self.filters = kwargs.get("filter", None)
         self.return_object = kwargs.get("return_object", "NEO")
         self.date_search = {}
-        #self.return_objects = self.ReturnObjects[kwargs["return_object"]]
 
     def build_query(self):
         """
-        Transforms the provided query options, set upon initialization, into a set of Selectors that the NEOSearcher
+        Transforms the provided query options, set upon initialization,
+        into a set of Selectors that the NEOSearcher
         can use to perform the appropriate search functionality
 
-        :return: QueryBuild.Selectors namedtuple that translates the dict of query options into a SearchOperation
+        :return: QueryBuild.Selectors namedtuple that translates
+        the dict of query options into a SearchOperation
         """
-
-        # TODO: Translate the query parameters into a QueryBuild.Selectors object
 
         if self.date:
             self.date_search["type"] = DateSearch.equals.value
-            self.date_search["date"] = self.date 
+            self.date_search["date"] = self.date
 
         elif self.start_date and self.end_date:
-            self.date_search = { 
-                "type": DateSearch.between, 
+            self.date_search = {
+                "type": DateSearch.between,
                 "start_date": self.start_date,
-                "end_date": self.end_date 
+                "end_date": self.end_date
                 }
 
-        query = self.Selectors(self.date_search, self.number, self.filters, self.return_object)
-
+        query = self.Selectors(
+            self.date_search,
+            self.number,
+            self.filters,
+            self.return_object
+            )
 
         return query
 
 
 class Filter(object):
     """
-    Object representing optional filter options to be used in the date search for Near Earth Objects.
-    Each filter is one of Filter.Operators provided with a field to filter on a value.
+    Object representing optional filter options to be used in the date search
+    for Near Earth Objects. Each filter is one of Filter.Operators provided
+    with a field to filter on a value.
     """
+
+    # TODO: Create a dict of filter name to the NearEarthObject or OrbitPath
     Options = {
-        # TODO: Create a dict of filter name to the NearEarthObject or OrbitalPath property
     }
 
+    # TODO: Create a dict of operator symbol to an Operators method,
+    # see README Task 3 for hint
     Operators = {
-        # TODO: Create a dict of operator symbol to an Operators method, see README Task 3 for hint
     }
 
     def __init__(self, field, object, operation, value):
@@ -102,11 +114,15 @@ class Filter(object):
         """
         Class function that transforms filter options raw input into filters
 
-        :param input: list in format ["filter_option:operation:value_of_option", ...]
-        :return: defaultdict with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
+        :param input: list in format:
+        ["filter_option:operation:value_of_option", ...]
+
+        :return: defaultdict with key of NearEarthObject
+        or OrbitPath and value of empty list or list of Filters
         """
 
-        # TODO: return a defaultdict of filters with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
+        # TODO: return a defaultdict of filters with key of NearEarthObject
+        # or OrbitPath and value of empty list or list of Filters
 
     def apply(self, results):
         """
@@ -115,40 +131,49 @@ class Filter(object):
         :param results: List of Near Earth Object results
         :return: filtered list of Near Earth Object results
         """
-        # TODO: Takes a list of NearEarthObjects and applies the value of its filter operation to the results
+        # TODO: Takes a list of NearEarthObjects
+        # and applies the value of its filter operation to the results
 
 
 class NEOSearcher(object):
     """
-    Object with date search functionality on Near Earth Objects exposed by a generic
-    search interface get_objects, which, based on the query specifications, determines
-    how to perform the search.
+    Object with date search functionality on Near Earth Objects
+    exposed by a generic search interface get_objects, which, based on
+    the query specifications, determines how to perform the search.
     """
 
     def __init__(self, db):
         """
-        :param db: NEODatabase holding the NearEarthObject instances and their OrbitPath instances
+        :param db: NEODatabase holding the NearEarthObject instances
+        and their OrbitPath instances
         """
         self.db = db
-        # TODO: What kind of an instance variable can we use to connect DateSearch to how we do search?
+        # TODO: What kind of an instance variable can we use to connect
+        # DateSearch to how we do search?
         self.date_search_type = DateSearch.list()
 
     def get_objects(self, query):
         """
-        Generic search interface that, depending on the details in the QueryBuilder (query) calls the
-        appropriate instance search function, then applys any filters, with distance as the last filter.
+        Generic search interface that, depending on the details
+        in the QueryBuilder (query) calls the appropriate instance search
+        function, then applys any filters, with distance as the last filter.
 
-        Once any filters provided are applied, return the number of requested objects in the query.return_object
+        Once any filters provided are applied, return the number of requested
+        objects in the query.return_object
         specified.
 
         :param query: Query.Selectors object with query information
         :return: Dataset of NearEarthObjects or OrbitalPaths
         """
-        # TODO: This is a generic method that will need to understand, using DateSearch, how to implement search
-        # TODO: Write instance methods that get_objects can use to implement the two types of DateSearch your project
-        # TODO: needs to support that then your filters can be applied to. Remember to return the number specified in
-        # TODO: the Query.Selectors as well as in the return_type from Query.Selectors
-        
+        # TODO: This is a generic method that will need to understand,
+        # using DateSearch, how to implement search
+        # TODO: Write instance methods that get_objects can use to implement
+        # the two types of DateSearch your project
+        # TODO: needs to support that then your filters can be applied to.
+        # Remember to return the number specified in
+        # TODO: the Query.Selectors as well as in the return_type
+        # from Query.Selectors
+
         if self.date_search_type.index(query.date_search["type"]) == 1:
             result = self.db.neo_date_db.get(query.date_search["date"])
             result = result[:query.number]

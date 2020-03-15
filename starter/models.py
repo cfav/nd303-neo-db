@@ -2,31 +2,31 @@ class NearEarthObject(object):
     """
     Object containing data describing a Near Earth Object and it's orbits.
 
-    # TODO: You may be adding instance methods to NearEarthObject to help you implement search and output data.
+    # TODO: You may be adding instance methods to NearEarthObject
+    to help you implement search and output data.
     """
 
     def __init__(self, **kwargs):
         """
-        :param kwargs:    dict of attributes about a given Near Earth Object, only a subset of attributes used
+        :param kwargs:    dict of attributes about a given Near Earth Object,
+        only a subset of attributes used
         """
-        # TODO: What instance variables will be useful for storing on the Near Earth Object?
         self.id = kwargs["id"]
         self.neo_reference_id = kwargs["neo_reference_id"]
         self.name = kwargs["name"]
         self.nasa_jpl_url = kwargs["name"]
         self.absolute_magnitude_h = kwargs["absolute_magnitude_h"]
-        self.estimated_diameter_min_kilometers = kwargs["estimated_diameter_min_kilometers"]
-        self.estimated_diameter_max_kilometers = kwargs["estimated_diameter_max_kilometers"]
-        self.is_potentially_hazardous_asteroid = kwargs["is_potentially_hazardous_asteroid"]
+        self.estimated_dia_min_km = kwargs["estimated_diameter_min_kilometers"]
+        self.estimated_dia_max_km = kwargs["estimated_diameter_max_kilometers"]
+        self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
         self.close_approach_date_full = kwargs["close_approach_date_full"]
         self.orbits = []
 
     def __str__(self):
-        neo_contents =  f'id = {self.id}\n' + \
-                        f'name = {self.name}\n' + \
-                        f'orbit dates = {self.get_orbit_dates()}\n'
+        neo_contents = f'id = {self.id}\n' + \
+                       f'name = {self.name}\n' + \
+                       f'orbit dates = {self.get_orbit_dates()}\n'
         return neo_contents
-
 
     def update_orbits(self, orbit):
         """
@@ -35,7 +35,6 @@ class NearEarthObject(object):
         :param orbit: OrbitPath
         :return: None
         """
-
         # TODO: How do we connect orbits back to the Near Earth Object?
         self.orbits.append(orbit)
 
@@ -53,19 +52,16 @@ class NearEarthObject(object):
         return orbit_dates
 
 
-
 class OrbitPath(object):
     """
     Object containing data describing a Near Earth Object orbit.
-
-    # TODO: You may be adding instance methods to OrbitPath to help you implement search and output data.
     """
 
     def __init__(self, **kwargs):
         """
-        :param kwargs:    dict of attributes about a given orbit, only a subset of attributes used
+        :param kwargs:    dict of attributes about a given orbit,
+        only a subset of attributes used
         """
-        # TODO: What instance variables will be useful for storing on the Near Earth Object?
         self.id = kwargs["id"]
         self.neo_reference_id = kwargs["neo_reference_id"]
         self.name = kwargs["name"]
