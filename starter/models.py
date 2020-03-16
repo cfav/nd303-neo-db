@@ -16,8 +16,8 @@ class NearEarthObject(object):
         self.name = kwargs["name"]
         self.nasa_jpl_url = kwargs["nasa_jpl_url"]
         self.abs_magnitude_h = kwargs["absolute_magnitude_h"]
-        self.diameter_min_km = kwargs["estimated_diameter_min_kilometers"]
-        self.diameter_max_km = kwargs["estimated_diameter_max_kilometers"]
+        self.diameter_min_km = float(kwargs["estimated_diameter_min_kilometers"])
+        self.diameter_max_km = float(kwargs["estimated_diameter_max_kilometers"])
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
         self.orbits = []
         self.miss_distances_km = []
@@ -89,17 +89,17 @@ class OrbitPath(object):
         self.km_per_hour = kwargs["kilometers_per_hour"]
         self.close_approach_date = kwargs["close_approach_date"]
         self.close_approach_date_full = kwargs["close_approach_date_full"]
-        self.diameter_min_km = kwargs["estimated_diameter_min_kilometers"]
-        self.diameter_max_km = kwargs["estimated_diameter_max_kilometers"]
+        self.diameter_min_km = float(kwargs["estimated_diameter_min_kilometers"])
+        self.diameter_max_km = float(kwargs["estimated_diameter_max_kilometers"])
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
-        self.miss_distance_km = kwargs["miss_distance_kilometers"]
+        self.miss_distance_km = float(kwargs["miss_distance_kilometers"])
 
     def __str__(self):
         orbit_contents = f'name = {self.name}\n' + \
                          f'miss distance(km) = {self.miss_distance_km}\n' + \
                          f'km per hour = {self.km_per_hour}\n' + \
-                         f'est. diameter min(km) = {self.est_dia_min_km}\n' +\
-                         f'est. diameter max(km) = {self.est_dia_max_km}\n' +\
+                         f'est. diameter min(km) = {self.diameter_min_km}\n' +\
+                         f'est. diameter max(km) = {self.diameter_max_km}\n' +\
                          f'is hazardous = {self.is_hazardous}\n' +\
                          f'orbit date = {self.close_approach_date_full}\n'
         return orbit_contents
