@@ -30,7 +30,7 @@ class NearEarthObject(object):
                        f'est. diameter max(km) = {self.est_dia_max_km}\n' +\
                        f'is hazardous = {self.is_hazardous}\n' +\
                        f'orbit dates = {self.get_orbit_dates(self.orbits)}\n' +\
-                       f'miss_distances = {self.get_miss_distances(self.orbits)}\n'
+                       f'miss distances(km) = {self.get_miss_distances(self.orbits)}\n'
         return neo_contents
 
     def update_orbits(self, orbit):

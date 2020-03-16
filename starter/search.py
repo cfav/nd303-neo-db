@@ -97,15 +97,15 @@ class Filter(object):
     with a field to filter on a value.
     """
 
-    # TODO: Create a dict of filter name to the NearEarthObject or OrbitPath
+    # a dict of filter name to equivalent properties of NearEarthObjects
+    # and OrbitPaths
     Options = {
         "is_hazardous": "is_hazardous",
         "diameter": "est_dia_min_km",
         "distance": "miss_distance_km"
     }
 
-    # TODO: Create a dict of operator symbol to an Operators method,
-    # see README Task 3 for hint
+    # a dict of operator symbol to an Operators method
     Operators = {
         "=": eq,
         "<": lt,
@@ -134,8 +134,7 @@ class Filter(object):
         :param input: list in format:
         ["filter_option:operation:value_of_option", ...]
 
-        :return: defaultdict with key of NearEarthObject
-        or OrbitPath and value of empty list or list of Filters
+        :return: dict of filter names to Filter objects
         """
 
         # TODO: return a defaultdict of filters with key of NearEarthObject
@@ -151,7 +150,8 @@ class Filter(object):
 
             if filter_name in Filter.Options:
 
-                filters[Filter.Options[filter_name]] = [Filter(filter_name, None, Filter.Operators[operator], value)]
+                filters[Filter.Options[filter_name]] = \
+                   Filter(filter_name, None, Filter.Operators[operator], value)
 
             else:
                 raise UnsupportedFeature
@@ -171,7 +171,8 @@ class Filter(object):
 
         for result in results:
             self.object = result
-            if self.operation(getattr(self.object, Filter.Options[self.field]), self.value):
+            if self.operation(getattr(self.object, Filter.Options[self.field]),
+                              self.value):
                 filtered_results.append(result)
 
         return filtered_results
@@ -223,6 +224,7 @@ class NEOSearcher(object):
         query_end_date = query.date_search.get("end_date", None)
         query_date = query.date_search.get("date", None)
         query_db = self.db.neo_date_db
+        query_number = query.number
 
         query_type_index = self.date_search_type.index(query_date_search_type)
 
@@ -233,7 +235,7 @@ class NEOSearcher(object):
 
                 date_list = get_date_list(query_db, start_date, end_date)
                 results = get_results(query_db, date_list)
-                
+
             else:
                 raise UnsupportedFeature
 
@@ -243,15 +245,15 @@ class NEOSearcher(object):
         if query.filters:
             filters = Filter.create_filter_options(query.filters)
 
-            for key, filter in filters.items():
-                results = filter[0].apply(results)
+            for filter in filters.values():
+                results = filter.apply(results)
 
-        results = results[:query.number]
+        results = results[:query_number]
 
         if query.return_object == 'NEO':
             results = list(map(lambda
-                              orbit: self.db.neo_name_db[orbit.name],
-                              results))
+                               orbit: self.db.neo_name_db[orbit.name],
+                               results))
         return results
 
     @staticmethod
