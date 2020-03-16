@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from collections import namedtuple
 from enum import Enum
 
@@ -68,10 +70,13 @@ class Query(object):
 
         elif self.start_date and self.end_date:
             self.date_search = {
-                "type": DateSearch.between,
+                "type": DateSearch.between.value,
                 "start_date": self.start_date,
                 "end_date": self.end_date
                 }
+
+        else:
+            raise UnsupportedFeature
 
         query = self.Selectors(
             self.date_search,
@@ -176,12 +181,34 @@ class NEOSearcher(object):
         # TODO: the Query.Selectors as well as in the return_type
         # from Query.Selectors
 
-        if self.date_search_type.index(query.date_search["type"]) == 1:
-            result = self.db.neo_date_db.get(query.date_search["date"])
-            result = result[:query.number]
+        result = []
 
-            if query.return_object == 'NEO':
-                result = list(map(lambda
-                                  orbit: self.db.neo_name_db[orbit.name],
-                                  result))
+        if self.date_search_type.index(query.date_search["type"]) == 0:
+            if ((query.date_search["start_date"] in self.db.neo_date_db) and
+               (query.date_search["end_date"] in self.db.neo_date_db)):
+                date_list = sorted(self.db.neo_date_db)
+                start_index = date_list.index(query.date_search["start_date"])
+                end_index = date_list.index(query.date_search["end_date"])
+                date_list = date_list[start_index:end_index+1]
+                for date in date_list:
+                    orbits = self.db.neo_date_db[date]
+                    for orbit in orbits:
+                        result.append(orbit)
+            else:
+                start = dt.strptime(query.date_search["start_date"],
+                                    "%Y-%m-%d")
+                end = dt.strptime(query.date_search["end_date"],
+                                  "%Y-%m-%d")
+
+                print(start > end)
+
+        elif self.date_search_type.index(query.date_search["type"]) == 1:
+            result = self.db.neo_date_db.get(query.date_search["date"])
+
+        result = result[:query.number]
+
+        if query.return_object == 'NEO':
+            result = list(map(lambda
+                              orbit: self.db.neo_name_db[orbit.name],
+                              result))
         return result
