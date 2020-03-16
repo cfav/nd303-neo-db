@@ -93,7 +93,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
         # Confirm 0 results and 0 unique results
         self.assertEqual(len(results), 0)
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results
+            lambda neo: neo.diameter_min_km > 0.042 and neo.is_hazardous, results
         ))
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 0)
@@ -108,7 +108,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
         # Confirm 10 results and 10 unique results
         self.assertEqual(len(results), 10)
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results)
+            lambda neo: neo.diameter_min_km > 0.042 and neo.is_hazardous, results)
         )
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 10)
@@ -123,7 +123,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
         # Confirm 0 results and 0 unique results
         self.assertEqual(len(results), 0)
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results
+            lambda neo: neo.diameter_min_km > 0.042 and neo.is_hazardous, results
         ))
         neo_ids = set(map(lambda neo: neo.name, results))
         self.assertEqual(len(neo_ids), 0)
@@ -141,7 +141,7 @@ class TestNEOSearchUseCases(unittest.TestCase):
 
         # Filter NEOs by NEO attributes
         neo_ids = list(filter(
-            lambda neo: neo.diameter_min_km > 0.042 and neo.is_potentially_hazardous_asteroid, results)
+            lambda neo: neo.diameter_min_km > 0.042 and neo.is_hazardous, results)
         )
 
         # Filter to NEO Orbit Paths with Matching Distance
@@ -151,9 +151,9 @@ class TestNEOSearchUseCases(unittest.TestCase):
         unique_orbits = set()
         filtered_orbits = []
         for orbit in all_orbits:
-            date_name = f'{orbit.close_approach_date}.{orbit.neo_name}'
+            date_name = f'{orbit.close_approach_date}.{orbit.name}'
             if date_name not in unique_orbits:
-                if orbit.miss_distance_kilometers > 234989.0:
+                if orbit.miss_distance_km > 234989.0:
                     filtered_orbits.append(orbit)
 
         # Grab the requested number

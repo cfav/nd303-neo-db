@@ -53,4 +53,16 @@ OrbitPaths.
 * Details: invalid comparisons
 * Command to reproduce: `python -m unittest discover`
 * Found in commit: 7058bd1251c83fe4926f5410e1e94d5b5d5799dc
+* Resolved in commit: 3b12a015e458369e8b77df92add460f0fcc6afe2
+
+&nbsp;
+
+**# 7: object has no attribute 'is_potentially_hazardous_asteroid'**
+
+* Details: Tests expect 'is_potentially_hazardous_asteroid'
+* Command to reproduce: `python -m unittest discover`
+* Found in commit: 3b12a015e458369e8b77df92add460f0fcc6afe2
 * Resolved in commit: 
+
+
+
