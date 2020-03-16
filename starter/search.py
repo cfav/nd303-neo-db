@@ -265,6 +265,9 @@ class NEOSearcher(object):
             results = list(map(lambda
                                orbit: self.db.neo_name_db[orbit.name],
                                results))
+
+        if len(results) == 0:
+            results = ["NO MATCHES FOUND!"]
         return results
 
     @staticmethod

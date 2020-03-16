@@ -59,10 +59,11 @@ OrbitPaths.
 
 **# 7: object has no attribute 'is_potentially_hazardous_asteroid'**
 
-* Details: Tests expect 'is_potentially_hazardous_asteroid'
+* Details: Tests expect 'is_potentially_hazardous_asteroid' as the property
+name.
 * Command to reproduce: `python -m unittest discover`
 * Found in commit: 3b12a015e458369e8b77df92add460f0fcc6afe2
-* Resolved in commit: 
+* Resolved in commit: 05e747f0149e771465fb3ae6f7656c8cc3e5b318
 
 
 
