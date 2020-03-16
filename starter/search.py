@@ -77,7 +77,6 @@ class Query(object):
                 }
             self.date_search["filter"] = self.filters
 
-
         else:
             raise UnsupportedFeature
 
@@ -118,7 +117,7 @@ class Filter(object):
     def __init__(self, field, object, operation, value):
         """
         :param field:  str representing field to filter on
-        :param field:  str representing object to filter on
+        :param object:  object to filter on
         :param operation: str representing filter operation to perform
         :param value: str representing value to filter for
         """
@@ -159,7 +158,6 @@ class Filter(object):
 
         return filters
 
-
     def apply(self, results):
         """
         Function that applies the filter operation onto a set of results
@@ -177,6 +175,7 @@ class Filter(object):
                 filtered_results.append(result)
 
         return filtered_results
+
 
 class NEOSearcher(object):
     """
@@ -217,35 +216,74 @@ class NEOSearcher(object):
         # TODO: the Query.Selectors as well as in the return_type
         # from Query.Selectors
 
-        result = []
+        results = []
 
-        if self.date_search_type.index(query.date_search["type"]) == 0:
-            if ((query.date_search["start_date"] in self.db.neo_date_db) and
-               (query.date_search["end_date"] in self.db.neo_date_db)):
-                date_list = sorted(self.db.neo_date_db)
-                start_index = date_list.index(query.date_search["start_date"])
-                end_index = date_list.index(query.date_search["end_date"])
-                date_list = date_list[start_index:end_index+1]
-                for date in date_list:
-                    orbits = self.db.neo_date_db[date]
-                    for orbit in orbits:
-                        result.append(orbit)
+        query_date_search_type = query.date_search.get("type", "")
+        query_start_date = query.date_search.get("start_date", None)
+        query_end_date = query.date_search.get("end_date", None)
+        query_date = query.date_search.get("date", None)
+        query_db = self.db.neo_date_db
+
+        query_type_index = self.date_search_type.index(query_date_search_type)
+
+        if query_type_index == 0:
+
+            if ((query_start_date in query_db) and
+               (query_end_date in query_db)):
+
+                date_list = get_date_list(query_db, start_date, end_date)
+                results = get_results(query_db, date_list)
+                
             else:
                 raise UnsupportedFeature
 
-        elif self.date_search_type.index(query.date_search["type"]) == 1:
-            result = self.db.neo_date_db.get(query.date_search["date"])
+        elif query_type_index == 1:
+            results = query_db.get(query_date)
 
         if query.filters:
             filters = Filter.create_filter_options(query.filters)
-            
-            for key, filter in filters.items():
-                result = filter[0].apply(result)
 
-        result = result[:query.number]
+            for key, filter in filters.items():
+                results = filter[0].apply(results)
+
+        results = results[:query.number]
 
         if query.return_object == 'NEO':
-            result = list(map(lambda
+            results = list(map(lambda
                               orbit: self.db.neo_name_db[orbit.name],
-                              result))
-        return result
+                              results))
+        return results
+
+    @staticmethod
+    def get_date_list(db, start_date, end_date):
+        """
+        Helper function to get a range of dates in the database.
+
+        :param db: NEODatabase object that uses date strings as keys
+        :param start_date: str representing start date
+        :param end_date: str representing end date
+        :return: list of date strings
+        """
+        date_list = sorted(db)
+        start_index = date_list.index(start_date)
+        end_index = date_list.index(end_date)
+        date_list = date_list[start_index:end_index+1]
+        return date_list
+
+    @staticmethod
+    def get_results(db, date_list):
+        """
+        Helper function to get a list of OrbitPaths found on given dates
+
+        :param db: NEODatabase object that uses date strings as keys
+        :param date_list: list of date strings
+        :return: list of OrbitPaths
+        """
+        results = []
+
+        for date in date_list:
+            orbits = query_db[date]
+            for orbit in orbits:
+                results.append(orbit)
+
+        return results
