@@ -233,8 +233,10 @@ class NEOSearcher(object):
             if ((query_start_date in query_db) and
                (query_end_date in query_db)):
 
-                date_list = get_date_list(query_db, start_date, end_date)
-                results = get_results(query_db, date_list)
+                date_list = NEOSearcher.get_date_list(query_db,
+                                                      query_start_date,
+                                                      query_end_date)
+                results = NEOSearcher.get_results(query_db, date_list)
 
             else:
                 raise UnsupportedFeature
@@ -284,7 +286,7 @@ class NEOSearcher(object):
         results = []
 
         for date in date_list:
-            orbits = query_db[date]
+            orbits = db[date]
             for orbit in orbits:
                 results.append(orbit)
 
