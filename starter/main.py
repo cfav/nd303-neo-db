@@ -143,6 +143,7 @@ if __name__ == '__main__':
 
     # Build Query
     query_selectors = Query(**var_args).build_query()
+    print(query_selectors)
 
     # Get Results
     try:
@@ -158,7 +159,6 @@ if __name__ == '__main__':
             format=args.output,
         )
     except Exception as e:
-        print(e)
         print('Write unsuccessful')
         sys.exit()
 

@@ -1,3 +1,4 @@
+from operator import eq, gt, lt, le, ge
 from datetime import datetime as dt
 
 from collections import namedtuple
@@ -74,6 +75,8 @@ class Query(object):
                 "start_date": self.start_date,
                 "end_date": self.end_date
                 }
+            self.date_search["filter"] = self.filters
+
 
         else:
             raise UnsupportedFeature
@@ -97,11 +100,19 @@ class Filter(object):
 
     # TODO: Create a dict of filter name to the NearEarthObject or OrbitPath
     Options = {
+        "is_hazardous": "is_hazardous",
+        "diameter": "est_dia_min_km",
+        "distance": "miss_distance_km"
     }
 
     # TODO: Create a dict of operator symbol to an Operators method,
     # see README Task 3 for hint
     Operators = {
+        "=": eq,
+        "<": lt,
+        ">": gt,
+        ">=": ge,
+        "<=": le
     }
 
     def __init__(self, field, object, operation, value):
@@ -131,6 +142,24 @@ class Filter(object):
         # TODO: return a defaultdict of filters with key of NearEarthObject
         # or OrbitPath and value of empty list or list of Filters
 
+        filters = {}
+
+        for filter_option in filter_options:
+            params = filter_option.split(":")
+            filter_name = params[0]
+            operator = params[1]
+            value = params[2]
+
+            if filter_name in Filter.Options:
+
+                filters[Filter.Options[filter_name]] = [Filter(filter_name, None, Filter.Operators[operator], value)]
+
+            else:
+                raise UnsupportedFeature
+
+        return filters
+
+
     def apply(self, results):
         """
         Function that applies the filter operation onto a set of results
@@ -140,7 +169,14 @@ class Filter(object):
         """
         # TODO: Takes a list of NearEarthObjects
         # and applies the value of its filter operation to the results
+        filtered_results = []
 
+        for result in results:
+            self.object = result
+            if self.operation(getattr(self.object, Filter.Options[self.field]), self.value):
+                filtered_results.append(result)
+
+        return filtered_results
 
 class NEOSearcher(object):
     """
@@ -195,15 +231,16 @@ class NEOSearcher(object):
                     for orbit in orbits:
                         result.append(orbit)
             else:
-                start = dt.strptime(query.date_search["start_date"],
-                                    "%Y-%m-%d")
-                end = dt.strptime(query.date_search["end_date"],
-                                  "%Y-%m-%d")
-
-                print(start > end)
+                raise UnsupportedFeature
 
         elif self.date_search_type.index(query.date_search["type"]) == 1:
             result = self.db.neo_date_db.get(query.date_search["date"])
+
+        if query.filters:
+            filters = Filter.create_filter_options(query.filters)
+            
+            for key, filter in filters.items():
+                result = filter[0].apply(result)
 
         result = result[:query.number]
 

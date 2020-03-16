@@ -20,6 +20,7 @@ class NearEarthObject(object):
         self.est_dia_max_km = kwargs["estimated_diameter_max_kilometers"]
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
         self.orbits = []
+        self.miss_distances_km = []
 
     def __str__(self):
         neo_contents = f'id = {self.id}\n' + \
@@ -28,7 +29,8 @@ class NearEarthObject(object):
                        f'est. diameter min(km) = {self.est_dia_min_km}\n' +\
                        f'est. diameter max(km) = {self.est_dia_max_km}\n' +\
                        f'is hazardous = {self.is_hazardous}\n' +\
-                       f'orbit dates = {self.get_orbit_dates(self.orbits)}\n'
+                       f'orbit dates = {self.get_orbit_dates(self.orbits)}\n' +\
+                       f'miss_distances = {self.get_miss_distances(self.orbits)}\n'
         return neo_contents
 
     def update_orbits(self, orbit):
@@ -51,9 +53,23 @@ class NearEarthObject(object):
         orbit_dates = []
 
         for orbit in orbits:
-            orbit_dates.append(orbit.close_approach_date)
+            orbit_dates.append(orbit.close_approach_date_full)
 
         return orbit_dates
+
+    @staticmethod
+    def get_miss_distances(orbits):
+        """
+        Extracts the dates from the NEO instance
+
+        :return: list of dates
+        """
+        miss_distances = []
+
+        for orbit in orbits:
+            miss_distances.append(orbit.miss_distance_km)
+
+        return miss_distances
 
 
 class OrbitPath(object):
