@@ -39,7 +39,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.end_date = '2020-01-10'
 
     def test_find_unique_number_neos_on_date(self):
-        self.db.load_data()
         query_selectors = Query(number=10, date=self.start_date, return_object='NEO').build_query()
         results = NEOSearcher(self.db).get_objects(query_selectors)
 
@@ -49,7 +48,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 10)
 
     def test_find_unique_number_between_dates(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, start_date=self.start_date, end_date=self.end_date, return_object='NEO'
         ).build_query()
@@ -61,7 +59,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 10)
 
     def test_find_unique_number_neos_on_date_with_diameter(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, date=self.start_date, return_object='NEO', filter=["diameter:>:0.042"]
         ).build_query()
@@ -74,7 +71,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 4)
 
     def test_find_unique_number_between_dates_with_diameter(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, start_date=self.start_date, end_date=self.end_date,
             return_object='NEO', filter=["diameter:>:0.042"]
@@ -89,7 +85,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 10)
 
     def test_find_unique_number_neos_on_date_with_diameter_and_hazardous(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, date=self.start_date, return_object='NEO', filter=["diameter:>:0.042", "is_hazardous:=:True"]
         ).build_query()
@@ -104,7 +99,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 0)
 
     def test_find_unique_number_between_dates_with_diameter_and_hazardous(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, start_date=self.start_date, end_date=self.end_date,
             return_object='NEO', filter=["diameter:>:0.042", "is_hazardous:=:True"]
@@ -120,7 +114,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 10)
 
     def test_find_unique_number_neos_on_date_with_diameter_and_hazardous_and_distance(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, date=self.start_date, return_object='NEO',
             filter=["diameter:>:0.042", "is_hazardous:=:True", "distance:>:234989"]
@@ -136,7 +129,6 @@ class TestNEOSearchUseCases(unittest.TestCase):
         self.assertEqual(len(neo_ids), 0)
 
     def test_find_unique_number_between_dates_with_diameter_and_hazardous_and_distance(self):
-        self.db.load_data()
         query_selectors = Query(
             number=10, start_date=self.start_date, end_date=self.end_date,
             return_object='NEO',

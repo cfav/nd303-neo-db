@@ -19,3 +19,16 @@ unnecessary complexity.
 * Resolved in commit: 4a31170db0b2255cc79ce8c0e986a6f1b908342f
 
 &nbsp;
+
+**# 3: NameError when running test file**
+
+* Details: Getting several NameError flags when running test file
+* Command to reproduce: `python -m unittest discover`
+* Found in commit: b9a510992127db10813c90ca0e64272c016f74aa
+* Resolved in commit: 2b6988f710c9d73c860a691e97aefc1d099c6c27
+
+**# 4: AssertionError in test_find_unique_number_neos_on_date_with_diameter**
+* Details: Running command manually works but fails in the unittest
+* Command to reproduce: `python -m unittest discover`
+* Found in commit: 2b6988f710c9d73c860a691e97aefc1d099c6c27
+* Resolved in commit: 4a31170db0b2255cc79ce8c0e986a6f1b908342f
