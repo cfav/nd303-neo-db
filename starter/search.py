@@ -268,7 +268,8 @@ class NEOSearcher(object):
                                results))
 
         if len(results) == 0:
-            results = ["NO MATCHES FOUND!"]
+            print("NO MATCHES FOUND")
+
         return results
 
     @staticmethod

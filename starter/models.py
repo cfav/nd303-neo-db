@@ -25,16 +25,17 @@ class NearEarthObject(object):
         self.miss_distances_km = []
 
     def __str__(self):
+        orbit_dates = self.get_orbit_dates(self.orbits)
+        miss_distances = self.get_miss_distances(self.orbits)
+
         neo_contents = f'id = {self.id}\n' + \
                        f'name = {self.name}\n' + \
                        f'absolute magnitude(h) = {self.abs_magnitude_h}\n' + \
                        f'est. diameter min(km) = {self.diameter_min_km}\n' +\
                        f'est. diameter max(km) = {self.diameter_max_km}\n' +\
                        f'is hazardous = {self.is_hazardous}\n' +\
-                       f'orbit dates = {self.get_orbit_dates(
-                                        self.orbits)}\n' +\
-                       f'miss distances(km) = {self.get_miss_distances(
-                                               self.orbits)}\n'
+                       f'orbit dates = {orbit_dates}\n' +\
+                       f'miss distances(km) = {miss_distances}\n'
         return neo_contents
 
     def update_orbits(self, orbit):

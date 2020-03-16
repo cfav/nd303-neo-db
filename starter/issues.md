@@ -65,5 +65,15 @@ name.
 * Found in commit: 3b12a015e458369e8b77df92add460f0fcc6afe2
 * Resolved in commit: 05e747f0149e771465fb3ae6f7656c8cc3e5b318
 
+&nbsp;
+
+**# 8: failing tests when there are no matches found**
+
+* Details: Unit tests count the length of the results returned. However, the
+current implementation pushes a "NO MATCHES FOUND" string when there are no
+matches in the search and that causes a miscount.
+* Command to reproduce: `python -m unittest discover`
+* Found in commit: 05e747f0149e771465fb3ae6f7656c8cc3e5b318
+* Resolved in commit: 05e747f0149e771465fb3ae6f7656c8cc3e5b318
 
 

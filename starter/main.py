@@ -158,7 +158,6 @@ if __name__ == '__main__':
             format=args.output,
         )
     except Exception as e:
-        print(e)
         print('Write unsuccessful')
         sys.exit()
 
