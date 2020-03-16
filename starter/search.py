@@ -151,9 +151,10 @@ class Filter(object):
             if filter_name in Filter.Options:
 
                 value = Filter.convert_value_type(value, filter_name)
+                operator_function = Filter.Operators[operator]
 
                 filters[Filter.Options[filter_name]] = \
-                   Filter(filter_name, None, Filter.Operators[operator], value)
+                    Filter(filter_name, None, operator_function, value)
 
             else:
                 raise UnsupportedFeature
@@ -164,7 +165,7 @@ class Filter(object):
     def convert_value_type(value, filter_name):
         if filter_name != "is_hazardous":
             value = float(value)
-        
+
         return value
 
     def apply(self, results):

@@ -16,8 +16,10 @@ class NearEarthObject(object):
         self.name = kwargs["name"]
         self.nasa_jpl_url = kwargs["nasa_jpl_url"]
         self.abs_magnitude_h = kwargs["absolute_magnitude_h"]
-        self.diameter_min_km = float(kwargs["estimated_diameter_min_kilometers"])
-        self.diameter_max_km = float(kwargs["estimated_diameter_max_kilometers"])
+        self.diameter_min_km = float(kwargs[
+                               "estimated_diameter_min_kilometers"])
+        self.diameter_max_km = float(kwargs[
+                               "estimated_diameter_max_kilometers"])
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
         self.orbits = []
         self.miss_distances_km = []
@@ -29,8 +31,10 @@ class NearEarthObject(object):
                        f'est. diameter min(km) = {self.diameter_min_km}\n' +\
                        f'est. diameter max(km) = {self.diameter_max_km}\n' +\
                        f'is hazardous = {self.is_hazardous}\n' +\
-                       f'orbit dates = {self.get_orbit_dates(self.orbits)}\n' +\
-                       f'miss distances(km) = {self.get_miss_distances(self.orbits)}\n'
+                       f'orbit dates = {self.get_orbit_dates(
+                                        self.orbits)}\n' +\
+                       f'miss distances(km) = {self.get_miss_distances(
+                                               self.orbits)}\n'
         return neo_contents
 
     def update_orbits(self, orbit):
@@ -82,6 +86,7 @@ class OrbitPath(object):
         :param kwargs:    dict of attributes about a given orbit,
         only a subset of attributes used
         """
+
         self.id = kwargs["id"]
         self.neo_reference_id = kwargs["neo_reference_id"]
         self.name = kwargs["name"]
@@ -89,8 +94,10 @@ class OrbitPath(object):
         self.km_per_hour = kwargs["kilometers_per_hour"]
         self.close_approach_date = kwargs["close_approach_date"]
         self.close_approach_date_full = kwargs["close_approach_date_full"]
-        self.diameter_min_km = float(kwargs["estimated_diameter_min_kilometers"])
-        self.diameter_max_km = float(kwargs["estimated_diameter_max_kilometers"])
+        self.diameter_min_km = float(kwargs[
+                               "estimated_diameter_min_kilometers"])
+        self.diameter_max_km = float(kwargs[
+                               "estimated_diameter_max_kilometers"])
         self.is_hazardous = kwargs["is_potentially_hazardous_asteroid"]
         self.miss_distance_km = float(kwargs["miss_distance_kilometers"])
 
