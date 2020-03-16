@@ -101,7 +101,7 @@ class Filter(object):
     # and OrbitPaths
     Options = {
         "is_hazardous": "is_hazardous",
-        "diameter": "est_dia_min_km",
+        "diameter": "diameter_min_km",
         "distance": "miss_distance_km"
     }
 

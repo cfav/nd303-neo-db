@@ -28,7 +28,16 @@ unnecessary complexity.
 * Resolved in commit: 2b6988f710c9d73c860a691e97aefc1d099c6c27
 
 **# 4: AssertionError in test_find_unique_number_neos_on_date_with_diameter**
+
 * Details: Running command manually works but fails in the unittest
 * Command to reproduce: `python -m unittest discover`
 * Found in commit: 2b6988f710c9d73c860a691e97aefc1d099c6c27
 * Resolved in commit: 4a31170db0b2255cc79ce8c0e986a6f1b908342f
+
+**# 5: 'NearEarthObject' object has no attribute 'diameter_min_km'**
+
+* Details: test file uses different property names for NearEarthModels and
+OrbitPaths.
+* Command to reproduce: `python -m unittest discover`
+* Found in commit: 2078033a60a442e2ef9e3c0f9bc7693b5a494e0d
+* Resolved in commit: 
