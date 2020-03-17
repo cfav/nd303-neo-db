@@ -17,9 +17,9 @@ If you have multiple versions of Python installed on your machine, please be min
 To use the project:
 
 1. Clone the project to your local machine
-2. Create a virtual environment, named `venv`, with `python3 -m venv /venv` in project root
+2. Create a virtual environment, named `venv`, with `python3 -m venv venv` in project root
 3. Activate the virtual environment with `source venv/bin/activate`
-4. Navigate to the `/starter` directory
+4. Navigate to the `./starter` directory
 5. Run `python main.py -h` for an explanation of how to run the project
 6. Or try it out yourself!
 
