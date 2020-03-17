@@ -144,6 +144,11 @@ class Filter(object):
 
         for filter_option in filter_options:
             params = filter_option.split(":")
+
+            if len(params) != 3:
+                print("Malformed filter parameters.")
+                raise UnsupportedFeature
+
             filter_name = params[0]
             operator = params[1]
             value = params[2]
@@ -151,12 +156,17 @@ class Filter(object):
             if filter_name in Filter.Options:
 
                 value = Filter.convert_value_type(value, filter_name)
-                operator_function = Filter.Operators[operator]
+                operator_function = Filter.Operators.get(operator, None)
+
+                if operator_function is None:
+                    print("Filter operator not found.")
+                    raise UnsupportedFeature
 
                 filters[Filter.Options[filter_name]] = \
                     Filter(filter_name, None, operator_function, value)
 
             else:
+                print("Filter name not found.")
                 raise UnsupportedFeature
 
         return filters
@@ -164,7 +174,10 @@ class Filter(object):
     @staticmethod
     def convert_value_type(value, filter_name):
         if filter_name != "is_hazardous":
-            value = float(value)
+            try:
+                value = float(value)
+            except:
+                print("value is not a number")
 
         return value
 
@@ -250,10 +263,14 @@ class NEOSearcher(object):
                 results = NEOSearcher.get_results(query_db, date_list)
 
             else:
+                print("one or both dates not found in database")
                 raise UnsupportedFeature
 
         elif query_type_index == 1:
-            results = query_db.get(query_date)
+            results = query_db.get(query_date, None)
+            if results is None:
+                print("date not found in database")
+                raise UnsupportedFeature
 
         if query.filters:
             filters = Filter.create_filter_options(query.filters)
