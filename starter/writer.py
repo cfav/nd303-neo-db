@@ -1,5 +1,7 @@
 from enum import Enum
 from models import NearEarthObject, OrbitPath
+from exceptions import UnsupportedFeature
+
 import csv
 
 
@@ -95,7 +97,7 @@ class NEOWriter(object):
                             })
 
         else:
-            print("write option not supported")
+            raise UnsupportedFeature
 
         return True
 

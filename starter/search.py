@@ -234,6 +234,7 @@ class NEOSearcher(object):
         query_end_date = query.date_search.get("end_date", None)
         query_date = query.date_search.get("date", None)
         query_db = self.db.neo_date_db
+        query_name_db = self.db.neo_name_db
         query_number = query.number
 
         query_type_index = self.date_search_type.index(query_date_search_type)
@@ -264,7 +265,7 @@ class NEOSearcher(object):
 
         if query.return_object == 'NEO':
             results = list(map(lambda
-                               orbit: self.db.neo_name_db[orbit.name],
+                               orbit: query_name_db[orbit.name],
                                results))
 
         if len(results) == 0:
@@ -300,7 +301,7 @@ class NEOSearcher(object):
         results = []
 
         for date in date_list:
-            orbits = db[date]
+            orbits = db.get(date)
             for orbit in orbits:
                 results.append(orbit)
 

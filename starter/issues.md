@@ -74,6 +74,6 @@ current implementation pushes a "NO MATCHES FOUND" string when there are no
 matches in the search and that causes a miscount.
 * Command to reproduce: `python -m unittest discover`
 * Found in commit: 05e747f0149e771465fb3ae6f7656c8cc3e5b318
-* Resolved in commit: 05e747f0149e771465fb3ae6f7656c8cc3e5b318
+* Resolved in commit: 915dfa3fb3a17bac690e03312aafe7f7e5d28c49
 
 
